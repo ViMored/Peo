@@ -40,7 +40,6 @@ public class MenuPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String isbn = JOptionPane.showInputDialog(null, "Ingrese el ISBN del libro:");
 
-                // Buscar el libro en la lista de libros
                 Libro libro = buscarLibroPorISBN(isbn);
                 if (libro != null) {
                     if (libro.getCopias() > 0) {
@@ -74,7 +73,7 @@ public class MenuPrincipal extends JFrame {
                     int copias = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el número de copias del libro:"));
                     int precio = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el precio del libro:"));
                     Libro nuevoLibro = new Libro(isbn, titulo, autor, categoria, copias, precio);
-                    listaLibros.add(nuevoLibro);  // Agregar el nuevo libro a la lista de libros
+                    listaLibros.add(nuevoLibro);
                     guardarLibros(listaLibros);
                     JOptionPane.showMessageDialog(null, "Libro agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -89,7 +88,7 @@ public class MenuPrincipal extends JFrame {
                 if (libro != null) {
 
                     libro.setCopias(libro.getCopias() + 1);
-                    Reserva reserva = new Reserva(usuarioActual.getRut(), usuarioActual.getNombre(), usuarioActual.getApellido(), libro.getIsbn(), libro.getTitulo(), "Prestamo");
+                    Reserva reserva = new Reserva(usuarioActual.getRut(), usuarioActual.getNombre(), usuarioActual.getApellido(), libro.getIsbn(), libro.getTitulo(), "Devolución");
                     guardarReservas(reserva);
                     JOptionPane.showMessageDialog(null, "Devolución exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
