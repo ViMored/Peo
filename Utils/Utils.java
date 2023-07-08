@@ -54,14 +54,16 @@ public class Utils {
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
     }
-    public static void reservas(Reserva reserva) {
+    public static void reservas(List<Reserva> listaReserva) {
         // Escribir el archivo "usuarios.txt"
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("reservas.txt"));
-            String linea = reserva.getRutVendedor() + "," + reserva.getNombre() + "," + reserva.getApellido() + "," +
-                    reserva.getIsbnLibro() + "," + reserva.getNombreLibro() + "," + reserva.getTipoTransaccion();
-            writer.write(linea);
-            writer.newLine();
+            for (Reserva reserva : listaReserva) {
+                String linea = reserva.getRutVendedor() + "," + reserva.getNombre() + "," + reserva.getApellido() + "," +
+                        reserva.getIsbnLibro() + "," + reserva.getNombreLibro() + "," + reserva.getTipoTransaccion();
+                writer.write(linea);
+                writer.newLine();
+            }
             writer.close();
         }
         catch (IOException e){

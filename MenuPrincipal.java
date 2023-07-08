@@ -46,7 +46,8 @@ public class MenuPrincipal extends JFrame {
 
                         libro.setCopias(libro.getCopias() - 1);
                         Reserva reserva = new Reserva(usuarioActual.getRut(), usuarioActual.getNombre(), usuarioActual.getApellido(), libro.getIsbn(), libro.getTitulo(), "Prestamo");
-                        guardarReservas(reserva);
+                        listaReservas.add(reserva);
+                        guardarReservas(listaReservas);
                         JOptionPane.showMessageDialog(null, "Préstamo exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " no tiene copias disponibles.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -89,7 +90,8 @@ public class MenuPrincipal extends JFrame {
 
                     libro.setCopias(libro.getCopias() + 1);
                     Reserva reserva = new Reserva(usuarioActual.getRut(), usuarioActual.getNombre(), usuarioActual.getApellido(), libro.getIsbn(), libro.getTitulo(), "Devolución");
-                    guardarReservas(reserva);
+                    listaReservas.add(reserva);
+                    guardarReservas(listaReservas);
                     JOptionPane.showMessageDialog(null, "Devolución exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " no existe en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -137,8 +139,8 @@ public class MenuPrincipal extends JFrame {
         Utils.sobreEscribir(this.listaLibros);
     }
 
-    private void guardarReservas(Reserva reserva) {
-        Utils.reservas(reserva);
+    private void guardarReservas(List<Reserva> listaReservas) {
+        Utils.reservas(this.listaReservas);
     }
 
     public void setUsuarioActual(Usuario usuario) {
