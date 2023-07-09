@@ -1,0 +1,109 @@
+@startuml
+skinparam backgroundcolor indigo/peru
+skinparam shadowing<<with_shadow>> true
+skinparam classBackgroundColor khaki
+skinparam sequence {
+ArrowColor Khaki
+ArrowFontColor Khaki
+}
+skinparam class {
+BorderColor black
+}
+
+
+Package JFrame{
+}
+
+Interface IMenuPrincipal
+{
++DevolverLibro(): void
++BuscarLibro(): void
++PrestarLibro(): void
++AgregarLibro(): void
+}
+
+Interface ISistema{
++IniciarSesion(): void
++CerrarPrograma(): void
+}
+
+package Utils {
+Class Utils{
++leerArchivoLibros(listaLibros: List<Libro>): void
++leerArchivoUsuarios(listaUsuarios: List<Usuario>): void
++reservas(listaReserva: List<Reserva>): void
++sobreEscribir(listaLibros: List<Libro>): void
+
+}
+}
+Class Inicio{
+-rutField: JTextField
+-listalibros: ArrayList<Libro>
+-listaUsuarios: ArrayList<Usuario>
+-listaReservas: ArrayList<Reserva>
++Inicio()
++verificarUsuario(rut: String, contrasenia: String): boolean
++cargarUsuario(): void
++cargarLibro(): void
++obtenerUsuarioPorRut(rut: String): Usuario
+
+}
+
+Class MenuPrincipal{
+-listaLibros: ArrayList<Libro>
+-listaUsuarios: ArrayList<Usuario>
+-listaReservas: ArrayList<Reserva>
+-usuarioActual: Usuario
++MenuPrincipal()
++cargarUsuario(): void
++cargarLibro(): void
++buscarLibroPorISBN(isbn: String): Libro
++setUsuarioActual(usuario: Usuario): void
+}
+
+package Entidades {
+Class Libro{
+-isbn: String
+-Titulo: String
+-Autor: String
+-Categoria: String
+-Copias: int
+-Stock: int
++Libro(isbn: String, titulo: String, Autor: String, Categoria:String, Copias: int, Stock: int)
++get's()
++setCopias(copia: int): void
+}
+
+Class Reserva{
+-Nombre: String
+-Apellido: String
+-Rut Vendedor: String
+-isbn Libro: String
+-Nombre Libro: String
+-Tipo de Transacción: String
++Reserva(rutVendedor: String, nombre: String, apellido: String, isbnLibro: String, nombreLibro: String, tipoTransaccion: String)
++get's()
+}
+
+Class Usuario{
+-Nombre: String
+-Apellido: String
+-Rut: String
+-Contrasenia: String
++Usuario(rut: String, nombre: String, apellido: String, contrasenia: String)
++get's()
+}
+}
+
+
+Utils <-- MenuPrincipal: usa
+Utils <-- Inicio: usa
+Inicio <--* Usuario
+Inicio <--* Reserva
+ISistema <|-..- Inicio: implementa
+IMenuPrincipal <|-..- MenuPrincipal: implementa
+Inicio <--* Libro
+JFrame <|.. Inicio
+JFrame <|.. MenuPrincipal
+MenuPrincipal <--> Inicio
+@enduml

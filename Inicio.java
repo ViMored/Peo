@@ -69,30 +69,6 @@ public class Inicio extends JFrame implements ISistema{
         return false;
     }
 
-    @Override
-    public void Menu() {
-
-    }
-
-    @Override
-    public void BuscarLibro() {
-
-    }
-
-    @Override
-    public void PrestarLibro() {
-
-    }
-
-    @Override
-    public void AgregarLibro() {
-
-    }
-
-    @Override
-    public void DevolverLibro() {
-
-    }
 
     @Override
     public void CerrarPrograma() {

@@ -1,0 +1,37 @@
+@startuml
+skinparam backgroundcolor indigo/peru
+skinparam shadowing<<with_shadow>> true
+skinparam entityBackgroundColor khaki
+
+Entity Libro{
+Titulo
+Autor
+Categoria
+isbn
+stock
+copias
+}
+
+Entity Reserva{
+Nombre
+Apellido
+Rut Vendedor
+isbn Libro
+Nombre Libro
+Tipo de Transacción
+}
+
+Entity Usuario{
+Rut
+Nombre
+Apellido
+Contraseña
+}
+
+note "El tipo de transaccion puede ser Devolver o prestar un libro" as Transacción
+
+
+Usuario --> Reserva
+Reserva --> Libro
+Transacción --> Reserva
+@enduml

@@ -9,7 +9,7 @@ import Entidades.Reserva;
 import Entidades.Usuario;
 import Utils.Utils;
 
-public class MenuPrincipal extends JFrame {
+public class MenuPrincipal extends JFrame implements IMenuPrincipal{
 
     private List<Libro> listaLibros;
     private List<Usuario> listaUsuarios;
@@ -38,85 +38,28 @@ public class MenuPrincipal extends JFrame {
         prestarLibroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String isbn = JOptionPane.showInputDialog(null, "Ingrese el ISBN del libro:");
-
-                Libro libro = buscarLibroPorISBN(isbn);
-                if (libro != null) {
-                    if (libro.getCopias() > 0) {
-
-                        libro.setCopias(libro.getCopias() - 1);
-                        Reserva reserva = new Reserva(usuarioActual.getRut(), usuarioActual.getNombre(), usuarioActual.getApellido(), libro.getIsbn(), libro.getTitulo(), "Prestamo");
-                        listaReservas.add(reserva);
-                        guardarReservas(listaReservas);
-                        JOptionPane.showMessageDialog(null, "Préstamo exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " no tiene copias disponibles.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " no existe en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                PrestarLibro();
             }
         });
 
         agregarLibroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String isbn = JOptionPane.showInputDialog(null, "Ingrese el ISBN del libro:");
-
-                Libro libroExistente = buscarLibroPorISBN(isbn);
-
-                if (libroExistente != null) {
-                    JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " ya está registrado en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    String titulo = JOptionPane.showInputDialog(null, "Ingrese el título del libro:");
-                    String autor = JOptionPane.showInputDialog(null, "Ingrese el autor del libro:");
-                    String categoria = JOptionPane.showInputDialog(null, "Ingrese la categoría del libro:");
-                    int copias = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el número de copias del libro:"));
-                    int precio = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el precio del libro:"));
-                    Libro nuevoLibro = new Libro(isbn, titulo, autor, categoria, copias, precio);
-                    listaLibros.add(nuevoLibro);
-                    guardarLibros(listaLibros);
-                    JOptionPane.showMessageDialog(null, "Libro agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                }
+                AgregarLibro();
             }
         });
 
         devolverLibroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String isbn = JOptionPane.showInputDialog(null, "Ingrese el ISBN del libro:");
-                Libro libro = buscarLibroPorISBN(isbn);
-                if (libro != null) {
-
-                    libro.setCopias(libro.getCopias() + 1);
-                    Reserva reserva = new Reserva(usuarioActual.getRut(), usuarioActual.getNombre(), usuarioActual.getApellido(), libro.getIsbn(), libro.getTitulo(), "Devolución");
-                    listaReservas.add(reserva);
-                    guardarReservas(listaReservas);
-                    JOptionPane.showMessageDialog(null, "Devolución exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " no existe en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                DevolverLibro();
             }
         });
 
         buscarLibroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String isbn = JOptionPane.showInputDialog("Ingrese el código ISBN del libro:");
-
-                Libro libroEncontrado = buscarLibroPorISBN(isbn);
-
-                if (libroEncontrado != null) {
-                    JOptionPane.showMessageDialog(null, "Libro encontrado:\n" +
-                            "ISBN: " + libroEncontrado.getIsbn() + "\n" +
-                            "Título: " + libroEncontrado.getTitulo() + "\n" +
-                            "Autor: " + libroEncontrado.getAutor() + "\n" +
-                            "Categoría: " + libroEncontrado.getCategoria() + "\n" +
-                            "Copias: " + libroEncontrado.getCopias() + "\n" +
-                            "Stock: " + libroEncontrado.getStock());
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se encontró ningún libro con el ISBN proporcionado.");
-                }
+                BuscarLibro();
             }
         });
     }
@@ -145,5 +88,82 @@ public class MenuPrincipal extends JFrame {
 
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
+    }
+
+    @Override
+    public void BuscarLibro() {
+        String isbn = JOptionPane.showInputDialog("Ingrese el código ISBN del libro:");
+
+        Libro libroEncontrado = buscarLibroPorISBN(isbn);
+
+        if (libroEncontrado != null) {
+            JOptionPane.showMessageDialog(null, "Libro encontrado:\n" +
+                    "ISBN: " + libroEncontrado.getIsbn() + "\n" +
+                    "Título: " + libroEncontrado.getTitulo() + "\n" +
+                    "Autor: " + libroEncontrado.getAutor() + "\n" +
+                    "Categoría: " + libroEncontrado.getCategoria() + "\n" +
+                    "Copias: " + libroEncontrado.getCopias() + "\n" +
+                    "Stock: " + libroEncontrado.getStock());
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró ningún libro con el ISBN proporcionado.");
+        }
+    }
+
+    @Override
+    public void PrestarLibro() {
+        String isbn = JOptionPane.showInputDialog(null, "Ingrese el ISBN del libro:");
+
+        Libro libro = buscarLibroPorISBN(isbn);
+        if (libro != null) {
+            if (libro.getCopias() > 0) {
+
+                libro.setCopias(libro.getCopias() - 1);
+                Reserva reserva = new Reserva(usuarioActual.getRut(), usuarioActual.getNombre(), usuarioActual.getApellido(), libro.getIsbn(), libro.getTitulo(), "Prestamo");
+                listaReservas.add(reserva);
+                guardarReservas(listaReservas);
+                JOptionPane.showMessageDialog(null, "Préstamo exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " no tiene copias disponibles.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " no existe en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    @Override
+    public void AgregarLibro() {
+        String isbn = JOptionPane.showInputDialog(null, "Ingrese el ISBN del libro:");
+
+        Libro libroExistente = buscarLibroPorISBN(isbn);
+
+        if (libroExistente != null) {
+            JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " ya está registrado en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            String titulo = JOptionPane.showInputDialog(null, "Ingrese el título del libro:");
+            String autor = JOptionPane.showInputDialog(null, "Ingrese el autor del libro:");
+            String categoria = JOptionPane.showInputDialog(null, "Ingrese la categoría del libro:");
+            int copias = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el número de copias del libro:"));
+            int precio = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el precio del libro:"));
+            Libro nuevoLibro = new Libro(isbn, titulo, autor, categoria, copias, precio);
+            listaLibros.add(nuevoLibro);
+            guardarLibros(listaLibros);
+            JOptionPane.showMessageDialog(null, "Libro agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    @Override
+    public void DevolverLibro() {
+        String isbn = JOptionPane.showInputDialog(null, "Ingrese el ISBN del libro:");
+        Libro libro = buscarLibroPorISBN(isbn);
+        if (libro != null) {
+
+            libro.setCopias(libro.getCopias() + 1);
+            Reserva reserva = new Reserva(usuarioActual.getRut(), usuarioActual.getNombre(), usuarioActual.getApellido(), libro.getIsbn(), libro.getTitulo(), "Devolución");
+            listaReservas.add(reserva);
+            guardarReservas(listaReservas);
+            JOptionPane.showMessageDialog(null, "Devolución exitosa.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "El libro con el ISBN " + isbn + " no existe en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
